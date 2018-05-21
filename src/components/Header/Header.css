@@ -1,0 +1,5 @@
+.Background {
+    height: 100%;
+    position: absolute;
+    background-image: url("../../assets/background.jpg");
+}
