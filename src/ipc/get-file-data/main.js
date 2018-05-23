@@ -6,7 +6,7 @@ const getFileDataInit = ({ ipcMain, dialog }) => {
         
         fs.readFile('file.txt', 'utf8', (err, data) => {
             if (err) {
-                event.sender.send('get-file-data-response', {succes: false, err});
+                event.sender.send('get-file-data-response', {succes: false, error: err});
             } else {
                 event.sender.send('get-file-data-response', {succes: true, data});
             } 
