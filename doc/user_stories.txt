@@ -1,0 +1,21 @@
+Co daje user ;)
+
+txt:
+	T [oC]	Cp
+	40	0,5
+
+Temp_solidus
+Temp_liquidus
+
+Czy user chce zdeklarowaæ jak¹œ dodatkow¹ przemianê:
+Temp_pocz¹tku_przemiany, Temp_koñca_przemiany, Efekt_cieplny = np. 10kJ
+------------------------------------------------------------------
+
+Co wywalamy jako wynik:
+
+Entalpie - prawo Kirchofa
+- na nastêpne zajêcia - przeliczenie ciep³a w³aœciwego na entalpie
+
+------------------------------------------------------------------
+Musimy wymyœliæ (lub skorzystaæ z literatury) metodê na otrzymanie
+wykres Temperatura od Entalpi + plik z danymi do importu
