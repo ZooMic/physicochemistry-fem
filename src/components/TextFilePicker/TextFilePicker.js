@@ -16,7 +16,13 @@ export default class TextFilePicker extends Component {
 
     static propTypes = {
         callback: PropTypes.func,
+        correct: PropTypes.bool,
     };
+
+    static defaultProps = {
+        callback: null,
+        correct: false,
+    }
 
     onFileSelectionChanged (event) {
         const { callback } = this.props;
@@ -73,16 +79,15 @@ export default class TextFilePicker extends Component {
         const onTrigerFileInputClick = this.onTrigerFileInputClick.bind(this);
 
         const { fileContent, fileOpened, fileName } = this.state;
+        const { correct } = this.props;
 
         return (
-            <div className="TextFilePicker-Body">
+            <div className={ `TextFilePicker-Body ${ correct ? "green" : "red" }` }>
                 <div className="TextFilePicker-FileInput">
                     <input className="hidden" name="file-selection" type="file" onChange={ onFileSelectionChanged } />
                     <input className="TextFilePicker-Input" type="button" value="Import file..." onClick={ onTrigerFileInputClick } />
                 </div>
-                { fileOpened ?
-                    <div className="TextFilePicker-FileName"> { fileName } </div> :
-                    <div className="TextFilePicker-FileName noFile"> No file selected </div> }
+                <div className="TextFilePicker-FileName">{ fileOpened ? fileName : "No file selected" }</div>
                 { fileOpened ? 
                     <div className="TextFilePicker-FileContent-isWrapper">
                         <div className="TextFilePicker-FileContent">{ fileContent }</div>

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 
+import { specificHeatFileConversion } from '../../utilities';
 import { TextFilePicker } from '../../components/TextFilePicker';
 import './App.css';
-
-/** Right now it does not look like I container but soon there will be some logic. Probably from Electron comunication*/
 
 export default class App extends Component {
 
@@ -11,24 +10,30 @@ export default class App extends Component {
         super(props);
 
         this.state = {
-			fileContent: "",
-			fileOpened: false,
+			specificHeat: "",
+			fileCorrect: false,
+			fileError: null,
         };
 	};
 	
-	onFileUpdate({fileContent, fileOpened}) {
+	onFileUpdate({fileContent}) {
+
+		const { specificHeat, failure, error } = specificHeatFileConversion(fileContent);
+
 		this.setState({
-			fileContent,
-			fileOpened,
+			specificHeat,
+			fileCorrect: !failure,
+			fileError: error === undefined ? null : error,
 		});
 	};
 
 	render() {
 
 		const onFileUpdate = this.onFileUpdate.bind(this);
+		const { fileCorrect } = this.state;
 
 		return (
-			<TextFilePicker callback={ onFileUpdate } />
+			<TextFilePicker callback={ onFileUpdate } correct={ fileCorrect }/>
 		);
 	}
 }
