@@ -1,0 +1,80 @@
+.LiquidSolidForm {
+    padding: 1em 1em 0em 1em;
+    background-color: gray;
+    display: flex;
+    flex-direction: column;
+}
+
+.LiquidSolidForm-BoxInput {
+    margin-bottom: 3px;
+    display: inline-flex;
+}
+
+.LiquidSolidForm-BoxInput.thermal-effect {
+    font-size: 0.6em;
+}
+
+.LiquidSolidForm-Wrapper {
+    background-color: gray;
+    display: flex;
+    flex-direction: column;
+}
+
+.LiquidSolidForm-Box {
+    margin-bottom: 3px;
+}
+
+.LiquidSolidForm-AddButton {
+    background: linear-gradient(to bottom, #d2ff52 0%,#91e842 100%);
+    width: 100%;
+    height: 2em;
+    font-weight: bold;
+    font-size: 2em;
+    border: none;
+    color: #5f9ea0;
+}
+
+.LiquidSolidForm-RemoveButton {
+    background: linear-gradient(to bottom, #ff3019 0%,#cf0404 100%);
+    border: none;
+}
+
+.LiquidSolidForm-RemoveButton img {
+    width: 2em;
+    height: 2em;
+}
+
+.LiquidSolidInput-Wrapper {
+    display: inline-flex;
+    padding: 15px;
+    background-color: #dcdcdc;
+    font-family: cursive;
+    width: 100%;
+}
+
+.LiquidSolidInput-Box {
+    margin-right: 2em;
+}
+
+.LiquidSolidInput-Box.special {
+    font-size: 0.8em;
+}
+
+.LiquidSolidInput-Box:last-child {
+    margin-right: 0;
+}
+
+.LiquidSolidInput-Label {
+    padding: 0 3px;
+}
+
+.LiquidSolidInput-Input {
+    margin: 0 7px;
+    background: #f3f3f3;
+    border: 0;
+    width: 8em;
+}
+
+.special .LiquidSolidInput-Input {
+    width: 5em;
+}

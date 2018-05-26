@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { specificHeatFileConversion } from '../../utilities';
 import { TextFilePicker } from '../../components/TextFilePicker';
+import { LiquidSolidForm } from '../../components/LiquidSolid';
 import './App.css';
 
 export default class App extends Component {
@@ -33,7 +34,10 @@ export default class App extends Component {
 		const { fileCorrect } = this.state;
 
 		return (
-			<TextFilePicker callback={ onFileUpdate } correct={ fileCorrect }/>
+			<div className="App">
+				<TextFilePicker callback={ onFileUpdate } correct={ fileCorrect }/>
+				<LiquidSolidForm />
+			</div>
 		);
 	}
 }
