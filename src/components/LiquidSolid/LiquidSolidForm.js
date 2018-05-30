@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 import { LiquidSolidInput } from '.';
 import trashIcon from '../../assets/trash-icon.png';
@@ -56,9 +56,11 @@ export default class LiquidSolidForm extends Component {
                 <div className="LiquidSolidForm-Wrapper">
                     { inputs.map(({id}) => {
                         const isWithtThermalEffect = id !== 1;
-
                         return ( 
-                            <div className={ `LiquidSolidForm-BoxInput ${isWithtThermalEffect ? "thermal-effect" : ""}`} >
+                            <div
+                                key={`box-input-${id}`}
+                                className={ `LiquidSolidForm-BoxInput ${isWithtThermalEffect ? "thermal-effect" : ""}`}
+                            >
                                 <LiquidSolidInput key={`liquid-solid-input-${id}`} id={ id } isThermalEffect={isWithtThermalEffect} />
                                 { isWithtThermalEffect ? <button
                                     id={`remove-button-${id}`}

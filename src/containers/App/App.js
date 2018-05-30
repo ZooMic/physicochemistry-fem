@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import { specificHeatFileConversion } from '../../utilities';
 import { TextFilePicker } from '../../components/TextFilePicker';

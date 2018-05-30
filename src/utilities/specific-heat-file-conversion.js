@@ -9,7 +9,7 @@ const specificHeatFileConversion = (file) => {
                 return line
                     .map(item => {
                         if (item === undefined || item === null || item === "" || isNaN(item)) {
-                            throw { message: `File have some defect. Check line ${index}` };
+                            throw new Error(`File have some defect. Check line ${index}`);
                         } else {
                             return Number(item);
                         }
@@ -17,7 +17,7 @@ const specificHeatFileConversion = (file) => {
             });
 
         if (specificHeat.length === 0) {
-            throw { message: `File is probably not selected or empty.` };
+            throw new Error(`File is probably not selected or empty.`);
         }
         
         return { specificHeat };

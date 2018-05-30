@@ -1,13 +1,14 @@
 .LiquidSolidForm {
-    padding: 1em 1em 0em 1em;
     background-color: gray;
     display: flex;
     flex-direction: column;
+    height: 100vh;
 }
 
 .LiquidSolidForm-BoxInput {
     margin-bottom: 3px;
     display: inline-flex;
+    min-height: 47px;
 }
 
 .LiquidSolidForm-BoxInput.thermal-effect {
@@ -18,10 +19,13 @@
     background-color: gray;
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
+    padding: 1em 1em 0em 1em;
 }
 
 .LiquidSolidForm-Box {
     margin-bottom: 3px;
+    padding: 0em 2em 1em 1em;
 }
 
 .LiquidSolidForm-AddButton {
