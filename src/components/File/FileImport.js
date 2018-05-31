@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './TextFilePicker.css';
+import './FileImport.css';
 
-export default class TextFilePicker extends Component {
-
+export default class FileImport extends Component {
     constructor(props) {
         super(props);
         
@@ -12,16 +11,26 @@ export default class TextFilePicker extends Component {
             fileContent: "",
             fileOpened: false,
         }
+
+        this.onFileSelectionChanged = this.onFileSelectionChanged.bind(this);
+        this.onTrigerFileInputClick = this.onTrigerFileInputClick.bind(this);
     };
 
     static propTypes = {
-        callback: PropTypes.func,
-        correct: PropTypes.bool,
+        wrapperClassName: PropTypes.string,
+        importFileClassName: PropTypes.string,
+        fileNameClassName: PropTypes.string,
+        callback: PropTypes.func.isRequired,
+        selectionText: PropTypes.string,
+        noSelectionText: PropTypes.string,
     };
 
     static defaultProps = {
-        callback: null,
-        correct: false,
+        wrapperClassName: '',
+        importFileClassName: '',
+        fileNameClassName: '',
+        selectionText: 'Import file...',
+        noSelectionText: 'No file selected',
     }
 
     onFileSelectionChanged (event) {
@@ -75,23 +84,22 @@ export default class TextFilePicker extends Component {
     }
 
     render() {
-        const onFileSelectionChanged = this.onFileSelectionChanged.bind(this);
-        const onTrigerFileInputClick = this.onTrigerFileInputClick.bind(this);
-
-        const { fileContent, fileOpened, fileName } = this.state;
-        const { correct } = this.props;
+        const { onFileSelectionChanged, onTrigerFileInputClick } = this;
+        const { wrapperClassName, importFileClassName, fileNameClassName, selectionText, noSelectionText } = this.props;
+        const { fileOpened, fileName } = this.state;
 
         return (
-            <div className={ `TextFilePicker-Body ${ correct ? "green" : "red" }` }>
-                <div className="TextFilePicker-FileInput">
-                    <input className="hidden" name="file-selection" type="file" onChange={ onFileSelectionChanged } />
-                    <input className="TextFilePicker-Input" type="button" value="Import file..." onClick={ onTrigerFileInputClick } />
+            <div className={`FileImport-Wrapper ${wrapperClassName}`}>
+                <div className={`FileImport-FileInput`}>
+                    <input className="FileImport-File" type="file" onChange={ onFileSelectionChanged } />
+                    <input 
+                        className={`FileImport-Button ${importFileClassName}`}
+                        type="button"
+                        value={ selectionText }
+                        onClick={ onTrigerFileInputClick }
+                    />
                 </div>
-                <div className="TextFilePicker-FileName">{ fileOpened ? fileName : "No file selected" }</div>
-                { fileOpened ? 
-                    <div className="TextFilePicker-FileContent-isWrapper">
-                        <div className="TextFilePicker-FileContent">{ fileContent }</div>
-                    </div> : null }
+                <div className={`FileImport-FileName ${fileNameClassName}`}>{ fileOpened ? fileName : noSelectionText }</div>
             </div>
         );
     }

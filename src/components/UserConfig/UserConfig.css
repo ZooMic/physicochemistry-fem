@@ -1,0 +1,42 @@
+.UserConfig-Header {
+    text-align: center;
+    padding: 1em 0em;
+    margin: 2em 0em 0em 0em;
+}
+
+.UserConfig-Inputs {
+    width: 100%;
+}
+
+.UserConfig-ScrollableContent {
+    max-height: 40vh;
+}
+
+.UserConfig-Inputs-FlexBoxWrapper {
+    border-bottom: 1px solid;
+}
+
+.UserConfig-InputRow {
+    margin: 0.25em 0em;
+}
+
+.UserConfig-Label {
+    width: 50%;
+}
+
+.UserConfig-Input {
+    width: 30%;
+}
+
+.UserConfig-Unit {
+    width: 20%;
+    text-align: end;
+}
+
+.UserConfig-RemoveButton {
+    width: 2em;
+}
+
+.UserConfig-AddButton {
+    width: 100%;
+}

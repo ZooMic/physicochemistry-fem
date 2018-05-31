@@ -1,0 +1,15 @@
+.ScrollableContent-OuterWrapper {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+/* 
+    15px in width and height is the size of scrollbar element,
+    this can vary in different brawsers.
+*/
+
+.ScrollableContent-InnerWrapper {
+    overflow-y: scroll;
+    box-sizing: content-box;
+    width: calc(100% + 15px);
+}

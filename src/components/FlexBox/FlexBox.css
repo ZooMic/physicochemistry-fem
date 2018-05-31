@@ -1,0 +1,11 @@
+.FlexBox-Container {
+    display: flex;
+}
+
+.FlexBox-Container.Row {
+    flex-direction: row;
+}
+
+.FlexBox-Container.Column {
+    flex-direction: column;
+}

@@ -1,0 +1,15 @@
+.FileImport-File {
+    display: none;
+}
+
+.FileImport-Wrapper {
+    text-align:center;
+}
+
+.FileImport-FileName {
+    width: 100%;
+}
+
+.FileImport-Button {
+    width: 100%;
+}

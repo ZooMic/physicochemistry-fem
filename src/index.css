@@ -3,3 +3,61 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+/* ---- BUTTONS ---- */
+.button {
+  border: none;
+  padding: 1em;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.button.small {
+  padding: 0.25em;
+}
+
+.button.success {
+  background: radial-gradient(ellipse at center, #006e2e 0%,#006e2e 100%);
+  color: white;
+}
+
+.button.failure {
+  background: radial-gradient(ellipse at center, rgba(143,2,34,1) 0%,#9a0005 44%,#ba0006 100%);
+  color: #ffffff;
+}
+
+/* ---- AREA ---- */
+.area {
+  padding: 1em 0em;
+}
+
+.area.success {
+  background-color: #b7d6a0;
+  color: #2d520f;
+}
+
+.area.failure {
+  background-color: #ffc4c4;
+  color: #cf0404;
+}
+
+/* ---- CONTENT ---- */
+.content {
+  font-size: 0.8em;
+  padding: 1em;
+}
+
+.content.success {
+  background-color: #efffe3;
+}
+
+.content.failure {
+  background-color: #ffe9e9;
+}
+
+.disabled {
+  background-color: #ececec;
+  color: #d2d2d2;
+}
+
