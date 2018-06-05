@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import { specificHeatFileConversion } from '../../utilities';
-import { Entalpy } from "../../components/Entalpy";
+import { specificHeatFileConversion, calculateEnthalpy } from '../../utilities';
 import { FlexBox } from "../../components/FlexBox";
 import { ScrollableContent } from '../../components/ScrollableContent';
 import { FileImport, FilePreview } from '../../components/File';
 import { UserConfig } from '../../components/UserConfig';
+
 import './App.css';
 import '../../index.css';
 
@@ -30,6 +30,7 @@ export default class App extends Component {
 		this.onUserConfigUpdate = this.onUserConfigUpdate.bind(this);
 		this.onAddNewInput = this.onAddNewInput.bind(this);
 		this.onRemoveInput = this.onRemoveInput.bind(this);
+		this.onCalculateClick = this.onCalculateClick.bind(this);
 	};
 	
 	onFileUpdate({fileContent}) {
@@ -81,15 +82,22 @@ export default class App extends Component {
 		});
 	}
 
+	onCalculateClick() {
+		const { specificHeat } = this.state;
+
+		calculateEnthalpy(specificHeat);
+	}
+
 	render() {
 
-		const { onFileUpdate, onUserConfigUpdate, onAddNewInput, onRemoveInput } = this;
+		const { onFileUpdate, onUserConfigUpdate, onAddNewInput, onRemoveInput, onCalculateClick } = this;
 		const { fileContent, fileCorrect, specificHeat, fileError, inputs } = this.state;
 		const isSuccess = fileCorrect ? 'success' : 'failure';
 
 		return (
 			<div className="App">
 				<FlexBox align="Row">
+
 					<div className={`App-DataImport`}>
 						<FlexBox align="Column">
 							<FileImport
@@ -103,12 +111,19 @@ export default class App extends Component {
 									className={`content ${isSuccess}`} fileContent={ fileContent }
 								/> : null }
 							<UserConfig inputs={inputs} onUpdate={ onUserConfigUpdate } onAddClick={ onAddNewInput } onRemoveClick={ onRemoveInput }/>
-							<button className="App-CalculateButton button success">Calculate</button>
+							<button className="App-CalculateButton button success" onClick={ onCalculateClick }>Calculate</button>
+						</FlexBox>
+					</div>
+
+					<div className={`App-ResultsDisplayAndExport`}>
+						<FlexBox align="Column">
+							<div>Some title of the section</div>
+							<div>Chart 1: Temperature  - SpecificHeat</div>
+							<div>Chart 2: SpecificHeat - Enthalpy - without interpolation and with interpolation</div>
 						</FlexBox>
 					</div>
 					{/* <LiquidSolidForm /> */}
 				</FlexBox>
-				{/* <Entalpy specificHeat={ specificHeat }/> */}
 			</div>
 		);
 	}
