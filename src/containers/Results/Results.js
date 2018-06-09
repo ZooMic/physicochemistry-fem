@@ -4,23 +4,6 @@ import { Scatter } from 'react-chartjs-2';
 import './Results.css';
 import '../../index.css';
 
-const data = {
-    datasets: [{
-        label: 'Temperature',
-        data: [{
-            x: 10,
-            y: 2,
-        }, {
-            x: 12,
-            y: 14,
-        }, {
-            x: 17,
-            y: -7,
-        }],
-        backgroundColor: 'rgba(0, 0, 0, 0)',
-        borderColor: 'rgba(0,0,0,1)',
-    }],
-}
 
 export default class Results extends Component {
 
@@ -78,6 +61,60 @@ export default class Results extends Component {
                 })),
             }],
         };
+        const enthSpecHeatOptions = {
+            ...chartsOptions,
+            scales: {
+                yAxes:[{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Specific Heat [J / (mol * K)]',
+                    }
+                }],
+                xAxes:[{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Enthalpy [J / mol]',
+                    }
+                }],
+            },
+        }
+
+        const tempEnthalpyData = {
+            datasets: [{
+                label: 'Not interpolated',
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                borderColor: '#da0006',
+                data: enthalpySpecificHeatNotInterpolatedData.map(({temperature, enthalpy}) => ({
+                    y: enthalpy,
+                    x: temperature,
+                })),
+            },{
+                label: 'Interpolated',
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                borderColor: '#006e2e',
+                data: enthalpySpecificHeatInterpolatedData.map(({temperature, enthalpy}) => ({
+                    y: enthalpy,
+                    x: temperature,
+                })),
+            }],
+        }
+        const tempEnthalpyOptions = {
+            ...chartsOptions,
+            scales: {
+                xAxes:[{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Temperature [K]',
+                    }
+                }],
+                yAxes:[{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Enthalpy [J / mol]',
+                    }
+                }],
+            },
+        }
 
 		return (
 			<Fragment>
@@ -86,13 +123,16 @@ export default class Results extends Component {
                     <div className={`content success`}>
                         <Scatter
                             data={enthSpecHeatData}
-                            options={chartsOptions}
+                            options={enthSpecHeatOptions}
                         />
                     </div>
                 </div>
                 <div className={`Results-ChartWrapper`}>
                     <div className={`content success`}>
-                        <Scatter data={data} options={chartsOptions} />
+                        <Scatter
+                            data={tempEnthalpyData}
+                            options={tempEnthalpyOptions}
+                        />
                     </div>
                 </div>
                 <button className={`button success`}>Export to file</button>

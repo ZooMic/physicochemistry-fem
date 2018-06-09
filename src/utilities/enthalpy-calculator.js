@@ -14,7 +14,8 @@ const calculateEnthalpy = (data, dT = 1, shouldInterpolate = false) => {
 }
 
 const calculateEnthalpyInterpolate = (data, dT) => {
-    const result = [];
+    let result = [];
+
     data.forEach((row, rowId) => {
         const [ T, Cp ] = row; // Temperature and specific heat
 
@@ -22,23 +23,42 @@ const calculateEnthalpyInterpolate = (data, dT) => {
             result.push({
                 temperature: T,
                 specificHeat: Cp,
-                enthalpy: T * Cp,
             });
         } else {
             const [ pT, pCp ] = data[rowId - 1]; // previous Temperature and specific heat
-            for (let i = pT; i <= T; i += dT) {
+            let i = pT;
+            while(true) {
+                if(i > T) {
+                    i = T;
+                }
+
                 const iCp = pCp + (i - pT) / (T - pT) * (Cp - pCp); // Interpolated specific heat
-                const { enthalpy : pH } = result[result.length - 1]; // Previous/Last Enthalpy
-                const iH = pH + iCp * dT;
 
                 result.push({
                     temperature: i,
                     specificHeat: iCp,
-                    enthalpy: iH,
                 });
+
+                if(i === T) {
+                    break;
+                }
+
+                i += dT;
             }
         }
     });
+
+    for (let j = 0; j < result.length; j++) {
+        const { temperature : T, specificHeat : Cp } = result[j];
+
+        if (j === 0) {
+            result[j]['enthalpy'] = T * Cp;
+        } else {
+            const { enthalpy : pH, temperature : pT } = result[j - 1];
+            result[j]['enthalpy'] = pH + Cp * (T - pT);
+        }
+    }
+
     return result;
 }
 
