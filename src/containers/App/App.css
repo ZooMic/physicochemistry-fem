@@ -4,8 +4,13 @@
   height: 100vh;
 }
 
+.App-MainFlexBox {
+  width: 100%;
+}
+
 .App-DataImport {
-  width: 25vw;
+  min-width: 210px;
+  max-width: 300px;
   padding: 1em;
 }
 
@@ -19,6 +24,7 @@
 }
 
 .App-ResultsDisplayAndExport {
-  width: 40vw;
+  width: 100%;
+  height: 90vh;
   padding: 1em;
 }

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 import { specificHeatFileConversion, calculateEnthalpy } from '../../utilities';
 import { FlexBox } from "../../components/FlexBox";
-import { ScrollableContent } from '../../components/ScrollableContent';
 import { FileImport, FilePreview } from '../../components/File';
 import { UserConfig } from '../../components/UserConfig';
+import { Results } from '../Results';
 
 import './App.css';
 import '../../index.css';
@@ -24,6 +24,7 @@ export default class App extends Component {
 				liquidus: 0,
 				effect: 0,
 			}],
+			deltaTemperature: 1,
 		};
 		
 		this.onFileUpdate = this.onFileUpdate.bind(this);
@@ -42,6 +43,8 @@ export default class App extends Component {
 			fileContent: fileContent,
 			fileCorrect: !failure,
 			fileError: error === undefined ? null : error,
+			enthalpySpecificHeatInterpolated: [],
+			enthalpySpecificHeatNotInterpolated: [],
 		});
 	};
 
@@ -83,46 +86,50 @@ export default class App extends Component {
 	}
 
 	onCalculateClick() {
-		const { specificHeat } = this.state;
-
-		calculateEnthalpy(specificHeat);
+		const { specificHeat, deltaTemperature } = this.state;
+		this.setState({
+			enthalpySpecificHeatInterpolated: calculateEnthalpy(specificHeat, deltaTemperature, true),
+			enthalpySpecificHeatNotInterpolated: calculateEnthalpy(specificHeat, deltaTemperature, false),
+		});
 	}
 
 	render() {
 
 		const { onFileUpdate, onUserConfigUpdate, onAddNewInput, onRemoveInput, onCalculateClick } = this;
-		const { fileContent, fileCorrect, specificHeat, fileError, inputs } = this.state;
+		const {
+			fileContent,
+			fileCorrect,
+			specificHeat,
+			fileError,
+			inputs,
+			enthalpySpecificHeatInterpolated,
+			enthalpySpecificHeatNotInterpolated,
+		} = this.state;
 		const isSuccess = fileCorrect ? 'success' : 'failure';
 
 		return (
 			<div className="App">
-				<FlexBox align="Row">
-
-					<div className={`App-DataImport`}>
-						<FlexBox align="Column">
-							<FileImport
-								callback={ onFileUpdate }
-								importFileClassName={`button ${isSuccess}`}
-								fileNameClassName={`area ${isSuccess}`}
-							/>
-							{ fileCorrect ?
-								<FilePreview
-									wrapperClassName={'App-FilePreview'}
-									className={`content ${isSuccess}`} fileContent={ fileContent }
-								/> : null }
-							<UserConfig inputs={inputs} onUpdate={ onUserConfigUpdate } onAddClick={ onAddNewInput } onRemoveClick={ onRemoveInput }/>
-							<button className="App-CalculateButton button success" onClick={ onCalculateClick }>Calculate</button>
-						</FlexBox>
-					</div>
-
-					<div className={`App-ResultsDisplayAndExport`}>
-						<FlexBox align="Column">
-							<div>Some title of the section</div>
-							<div>Chart 1: Temperature  - SpecificHeat</div>
-							<div>Chart 2: SpecificHeat - Enthalpy - without interpolation and with interpolation</div>
-						</FlexBox>
-					</div>
-					{/* <LiquidSolidForm /> */}
+				<FlexBox align="Row" className="App-MainFlexBox">
+					<FlexBox align="Column" className="App-DataImport">
+						<FileImport
+							callback={ onFileUpdate }
+							importFileClassName={`button ${isSuccess}`}
+							fileNameClassName={`area ${isSuccess}`}
+						/>
+						{ fileCorrect ?
+							<FilePreview
+								wrapperClassName={'App-FilePreview'}
+								className={`content ${isSuccess}`} fileContent={ fileContent }
+							/> : null }
+						<UserConfig inputs={inputs} onUpdate={ onUserConfigUpdate } onAddClick={ onAddNewInput } onRemoveClick={ onRemoveInput }/>
+						<button className="App-CalculateButton button success" onClick={ onCalculateClick }>Calculate</button>
+					</FlexBox>
+					<FlexBox className="App-ResultsDisplayAndExport" align="Column">
+						<Results
+							enthalpySpecificHeatInterpolatedData={enthalpySpecificHeatInterpolated}
+							enthalpySpecificHeatNotInterpolatedData={enthalpySpecificHeatNotInterpolated}
+						/>
+					</FlexBox>
 				</FlexBox>
 			</div>
 		);
