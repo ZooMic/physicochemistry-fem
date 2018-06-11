@@ -10,10 +10,12 @@
 
 .UserConfig-ScrollableContent {
     max-height: 25vh;
+    padding: 0;
 }
 
 .UserConfig-Inputs-FlexBoxWrapper {
     border-bottom: 1px solid;
+    margin-right: 1em;
 }
 
 .UserConfig-InputRow {
@@ -22,6 +24,7 @@
 
 .UserConfig-Label {
     width: 50%;
+    margin: auto;
 }
 
 .UserConfig-Input {
@@ -31,9 +34,14 @@
 .UserConfig-Unit {
     width: 20%;
     text-align: end;
+    margin: auto;
 }
 
-.UserConfig-RemoveButton {
+button.UserConfig-RemoveButton {
+    margin: 1em 0.5em;
+}
+
+img.UserConfig-RemoveButton {
     width: 2em;
 }
 

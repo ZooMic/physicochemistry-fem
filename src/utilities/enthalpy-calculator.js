@@ -1,4 +1,6 @@
-const calculateEnthalpy = (data, dT = 1, shouldInterpolate = false) => {
+import { functionProposition } from "../utilities/function-proposition";
+
+const calculateEnthalpy = (data, dT = 1, shouldInterpolate = false, inputs = []) => {
         
         /**
          * We can assume that our data are correct
@@ -6,15 +8,22 @@ const calculateEnthalpy = (data, dT = 1, shouldInterpolate = false) => {
          * so that if something is wrong, user could notice this
          * exacly when he is doing it.
          */
-        
+
         const result = shouldInterpolate ?
-            calculateEnthalpyInterpolate(data, dT) :
-            calculateEnthalpyNoInterpolate(data);
+            calculateEnthalpyInterpolate(data, dT, inputs) :
+            calculateEnthalpyNoInterpolate(data, inputs);
         return result || [];
 }
 
-const calculateEnthalpyInterpolate = (data, dT) => {
+const calculateEnthalpyInterpolate = (data, dT, inputs) => {
     let result = [];
+
+    const minTemp = data[0] && data[0].temperature;
+    const maxTemp = data.length > 0 && data[data.length - 1];
+
+    const { f, definiteIntegral : integral } = functionProposition(dT); // Passing dT as it causes error minimalisation
+
+    let elementsNumbe
 
     data.forEach((row, rowId) => {
         const [ T, Cp ] = row; // Temperature and specific heat
@@ -57,6 +66,17 @@ const calculateEnthalpyInterpolate = (data, dT) => {
             const { enthalpy : pH, temperature : pT } = result[j - 1];
             result[j]['enthalpy'] = pH + Cp * (T - pT);
         }
+
+        inputs.forEach(({max, min, effect}) => {
+            if(T >= min && T <= max) {
+                const pCT = (T - min) / (max - min) * 100; // Percent of current temperature in range [min, max]
+                const dX = 100 / (max - min);
+                const factor = f(pCT) * dX / integral;
+
+                result[j].enthalpy += effect * factor;
+            }
+        });
+
     }
 
     return result;

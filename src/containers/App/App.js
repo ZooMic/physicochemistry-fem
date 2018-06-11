@@ -20,9 +20,9 @@ export default class App extends Component {
 			fileCorrect: false,
 			fileError: null,
 			inputs: [{
-				solidus: 0,
-				liquidus: 0,
-				effect: 0,
+				min: 1495,
+				max: 1520,
+				effect: 150,
 			}],
 			deltaTemperature: 1,
 		};
@@ -48,11 +48,11 @@ export default class App extends Component {
 		});
 	};
 
-	onUserConfigUpdate({index, liquidus, solidus, effect}) {
+	onUserConfigUpdate({index, min, max, effect}) {
 		const { inputs } = this.state;
 		const newInputs = [ ...inputs ];
 		newInputs[index] = {
-			liquidus, solidus, effect
+			min, max, effect
 		};
 
 		this.setState({
@@ -67,8 +67,8 @@ export default class App extends Component {
 			inputs: [
 				...inputs,
 				{
-					liquidus: 0,
-					solidus: 0,
+					min: 0,
+					max: 0,
 					effect: 0,
 				}
 			]
@@ -86,10 +86,10 @@ export default class App extends Component {
 	}
 
 	onCalculateClick() {
-		const { specificHeat, deltaTemperature } = this.state;
+		const { specificHeat, deltaTemperature, inputs } = this.state;
 		this.setState({
-			enthalpySpecificHeatInterpolated: calculateEnthalpy(specificHeat, deltaTemperature, true),
-			enthalpySpecificHeatNotInterpolated: calculateEnthalpy(specificHeat, deltaTemperature, false),
+			enthalpySpecificHeatInterpolated: calculateEnthalpy(specificHeat, deltaTemperature, true, inputs),
+			enthalpySpecificHeatNotInterpolated: calculateEnthalpy(specificHeat, deltaTemperature, false, inputs),
 		});
 	}
 

@@ -33,16 +33,16 @@ export default class UserConfig extends Component {
         return (event) => {
             if (event && event.target && inputs[index]) {
 
-                let { liquidus, solidus, effect } = inputs[index];
+                let { min, max, effect } = inputs[index];
 
-                liquidus = event.target.name === "liquidus" ? Number(event.target.value) : liquidus;
-                solidus = event.target.name === "solidus" ? Number(event.target.value) : solidus;
+                min = event.target.name === "min" ? Number(event.target.value) : min;
+                max = event.target.name === "max" ? Number(event.target.value) : max;
                 effect = event.target.name === "effect" ? Number(event.target.value) : effect;
 
                 onUpdate({
                     index,
-                    liquidus,
-                    solidus,
+                    min,
+                    max,
                     effect,
                 });
             }
@@ -62,30 +62,30 @@ export default class UserConfig extends Component {
             <div className="UserConfig-Wrapper">
                 <div className="UserConfig-Header area success">Enter the data</div>
                 <div className="UserConfig-Content">
-                    <ScrollableContent className="UserConfig-ScrollableContent">
+                    <ScrollableContent className="UserConfig-ScrollableContent content success">
                         {
-                            inputs.map(({liquidus, solidus, effect}, index) => (
+                            inputs.map(({min, max, effect}, index) => (
                                 <FlexBox align="Row" key={`UserConfig-Input-${index}`} className="UserConfig-Inputs-FlexBoxWrapper">
                                     <div className="UserConfig-Inputs content success">
                                         <FlexBox align="Column">
                                             <FlexBox align="Row" className="UserConfig-InputRow">
-                                                <span className="UserConfig-Label">Solidus</span>
-                                                <input className="UserConfig-Input" type="number" name="solidus" onChange={ onChange(index) } value={ solidus.toString() }/>
+                                                <span className="UserConfig-Label">Min</span>
+                                                <input className="UserConfig-Input" type="number" name="min" onChange={ onChange(index) } value={ min.toString() }/>
                                                 <span className="UserConfig-Unit">{ "\u2103" }</span>
                                             </FlexBox>
                                             <FlexBox align="Row" className="UserConfig-InputRow">
-                                                <span className="UserConfig-Label">Liquidus</span>
-                                                <input className="UserConfig-Input" type="number" name="liquidus" onChange={ onChange(index) } value={ liquidus.toString() }/>
+                                                <span className="UserConfig-Label">Max</span>
+                                                <input className="UserConfig-Input" type="number" name="max" onChange={ onChange(index) } value={ max.toString() }/>
                                                 <span className="UserConfig-Unit">{ "\u2103" }</span>
                                             </FlexBox>
                                             <FlexBox align="Row" className="UserConfig-InputRow">
-                                                <span className="UserConfig-Label">Temp. effect</span>
+                                                <span className="UserConfig-Label">Thermal Effect</span>
                                                 <input className="UserConfig-Input" type="number" name="effect" onChange={ onChange(index) } value={ effect.toString() }/>
-                                                <span className="UserConfig-Unit">{ "J/mol" }</span>
+                                                <span className="UserConfig-Unit">{ "J/g" }</span>
                                             </FlexBox>
                                         </FlexBox>
                                     </div>
-                                    { index !== 0 ? <button className="button failure small" onClick={ onRemoveClick.bind(this, index) }>
+                                    { index !== 0 ? <button className="UserConfig-RemoveButton button failure small" onClick={ onRemoveClick.bind(this, index) }>
                                         <img className="UserConfig-RemoveButton" src={ trashIcon } alt="Remove"/>
                                     </button> : null }
                                 </FlexBox>
