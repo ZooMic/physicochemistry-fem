@@ -1,6 +1,8 @@
 import { functionProposition } from "../utilities/function-proposition";
+import { definiteIntegralCalculation } from '../utilities/definite-integral-calculation';
+const randomColor = require('random-color');
 
-const calculateEnthalpy = (data, dT = 1, shouldInterpolate = false, inputs = []) => {
+const calculateEnthalpy = (data, dT = 1, shouldInterpolate = false, inputs = [], functionInputs = []) => {
         
         /**
          * We can assume that our data are correct
@@ -9,21 +11,37 @@ const calculateEnthalpy = (data, dT = 1, shouldInterpolate = false, inputs = [])
          * exacly when he is doing it.
          */
 
-        const result = shouldInterpolate ?
-            calculateEnthalpyInterpolate(data, dT, inputs) :
-            calculateEnthalpyNoInterpolate(data, inputs);
-        return result || [];
+        const funcInputs = functionInputs
+            .filter(({functionActive}) => functionActive)
+            .map(({functionFormula, functionName, rangeMin, rangeMax}) => ({
+                calculated: definiteIntegralCalculation(functionFormula, dT, rangeMin, rangeMax),
+                functionName,
+                borderColor: randomColor().hexString(),
+            }));
+
+        let result = [];
+
+        if (shouldInterpolate) {
+            funcInputs.forEach(funcInputs => {
+                result.push({
+                    data: calculateEnthalpyInterpolate(data, dT, inputs, funcInputs),
+                    ...funcInputs,
+                });
+            });
+        } else {
+            result = calculateEnthalpyNoInterpolate(data, inputs);
+        }
+
+        return result;
 }
 
-const calculateEnthalpyInterpolate = (data, dT, inputs) => {
+const calculateEnthalpyInterpolate = (data, dT, inputs, funcInputs) => {
     let result = [];
 
     const minTemp = data[0] && data[0].temperature;
     const maxTemp = data.length > 0 && data[data.length - 1];
 
-    const { f, definiteIntegral : integral } = functionProposition(dT); // Passing dT as it causes error minimalisation
-
-    let elementsNumbe
+    const { calculated: { f, integral, max: fmax, min: fmin }, functionName, borderColor } = funcInputs // Passing dT as it causes error minimalisation
 
     data.forEach((row, rowId) => {
         const [ T, Cp ] = row; // Temperature and specific heat
@@ -67,11 +85,12 @@ const calculateEnthalpyInterpolate = (data, dT, inputs) => {
             result[j]['enthalpy'] = pH + Cp * (T - pT);
         }
 
+        let x
         inputs.forEach(({max, min, effect}) => {
             if(T >= min && T <= max) {
-                const pCT = (T - min) / (max - min) * 100; // Percent of current temperature in range [min, max]
-                const dX = 100 / (max - min);
-                const factor = f(pCT) * dX / integral;
+                x = fmin + (fmax - fmin) * (T - min) / (max - min); // Percent of current temperature in range [min, max]
+                const dX = (fmax - fmin) / (max - min);
+                const factor = f(x) * dX / integral;
 
                 result[j].enthalpy += effect * factor;
             }

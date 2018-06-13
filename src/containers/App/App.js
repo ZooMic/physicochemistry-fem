@@ -24,13 +24,31 @@ export default class App extends Component {
 				max: 1520,
 				effect: 150,
 			}],
+			functionInputs: [{
+				functionFormula: '1',
+				functionName: 'Evenly',
+				rangeMin: 0,
+				rangeMax: 100,
+				functionActive: true,
+
+			},{
+				functionFormula: 'Math.abs((-x + 100)*(-x + 110)*-x) / 170600',
+				functionName: 'Invented 1',
+				rangeMin: 0,
+				rangeMax: 100,
+				functionActive: false,
+			}],
 			deltaTemperature: 1,
+			calculationDone: false,
 		};
 		
 		this.onFileUpdate = this.onFileUpdate.bind(this);
 		this.onUserConfigUpdate = this.onUserConfigUpdate.bind(this);
+		this.onUserConfigFunctionsUpdate = this.onUserConfigFunctionsUpdate.bind(this);
 		this.onAddNewInput = this.onAddNewInput.bind(this);
 		this.onRemoveInput = this.onRemoveInput.bind(this);
+		this.onAddNewFunctionInput = this.onAddNewFunctionInput.bind(this);
+		this.onRemoveFunctionInput = this.onRemoveFunctionInput.bind(this);
 		this.onCalculateClick = this.onCalculateClick.bind(this);
 	};
 	
@@ -60,6 +78,45 @@ export default class App extends Component {
 		});
 	}
 
+	onUserConfigFunctionsUpdate({index, functionFormula, functionName, rangeMin, rangeMax, functionActive}) {
+		const { functionInputs } = this.state;
+		const newInputs = [ ...functionInputs ];
+		newInputs[index] = {
+			functionFormula, functionName, rangeMin, rangeMax, functionActive
+		};
+
+		this.setState({
+			functionInputs: newInputs,
+		});
+	}
+
+	onAddNewFunctionInput() {
+		const { functionInputs } = this.state;
+
+		this.setState({
+			functionInputs: [
+				...functionInputs,
+				{
+					functionFormula: '',
+					functionName: '',
+					rangeMin: 0,
+					rangeMax: 0,
+					functionActive: true,
+				}
+			]
+		});
+	}
+
+	onRemoveFunctionInput(index) {
+		const { functionInputs } = this.state;
+		const newInputs = [ ...functionInputs ];
+		newInputs.splice(index, 1);
+
+		this.setState({
+			functionInputs: newInputs,
+		});
+	}
+
 	onAddNewInput() {
 		const { inputs } = this.state;
 
@@ -86,24 +143,35 @@ export default class App extends Component {
 	}
 
 	onCalculateClick() {
-		const { specificHeat, deltaTemperature, inputs } = this.state;
+		const { specificHeat, deltaTemperature, inputs, functionInputs } = this.state;
 		this.setState({
-			enthalpySpecificHeatInterpolated: calculateEnthalpy(specificHeat, deltaTemperature, true, inputs),
-			enthalpySpecificHeatNotInterpolated: calculateEnthalpy(specificHeat, deltaTemperature, false, inputs),
+			enthalpySpecificHeatInterpolated: calculateEnthalpy(specificHeat, deltaTemperature, true, inputs, functionInputs),
+			enthalpySpecificHeatNotInterpolated: calculateEnthalpy(specificHeat, deltaTemperature, false, inputs, functionInputs),
+			calculationDone: true,
 		});
 	}
 
 	render() {
 
-		const { onFileUpdate, onUserConfigUpdate, onAddNewInput, onRemoveInput, onCalculateClick } = this;
+		const {
+			onFileUpdate,
+			onUserConfigUpdate,
+			onAddNewInput,
+			onRemoveInput,
+			onCalculateClick,
+			onUserConfigFunctionsUpdate,
+			onAddNewFunctionInput,
+			onRemoveFunctionInput,
+		} = this;
 		const {
 			fileContent,
 			fileCorrect,
-			specificHeat,
+			functionInputs,
 			fileError,
 			inputs,
 			enthalpySpecificHeatInterpolated,
 			enthalpySpecificHeatNotInterpolated,
+			calculationDone,
 		} = this.state;
 		const isSuccess = fileCorrect ? 'success' : 'failure';
 
@@ -121,11 +189,21 @@ export default class App extends Component {
 								wrapperClassName={'App-FilePreview'}
 								className={`content ${isSuccess}`} fileContent={ fileContent }
 							/> : null }
-						<UserConfig inputs={inputs} onUpdate={ onUserConfigUpdate } onAddClick={ onAddNewInput } onRemoveClick={ onRemoveInput }/>
-						<button className="App-CalculateButton button success" onClick={ onCalculateClick }>Calculate</button>
+						<UserConfig
+							isDisabled={!fileCorrect}
+							functionInputs={functionInputs}
+							inputs={inputs}
+							onUpdateInputs={ onUserConfigUpdate }
+							onUpdateFunctionInputs={ onUserConfigFunctionsUpdate }
+							onAddClick={ onAddNewInput }
+							onRemoveClick={ onRemoveInput }
+							onAddFunctionClick={ onAddNewFunctionInput }
+							onRemoveFunctionClick={ onRemoveFunctionInput }
+						/>
+						<button disabled={!fileCorrect} className={`App-CalculateButton button ${fileCorrect ? "success" : "disabled"}`} onClick={ onCalculateClick }>Calculate</button>
 					</FlexBox>
 					<FlexBox className="App-ResultsDisplayAndExport" align="Column">
-						<Results
+						<Results isDisabled={!calculationDone}
 							enthalpySpecificHeatInterpolatedData={enthalpySpecificHeatInterpolated}
 							enthalpySpecificHeatNotInterpolatedData={enthalpySpecificHeatNotInterpolated}
 						/>

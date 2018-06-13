@@ -9,3 +9,7 @@
     padding: 1em;
     background-color:#b7d6a0;
 }
+
+.Results-ChartWrapper.disabled {
+    background-color:#d8d8d8;
+}

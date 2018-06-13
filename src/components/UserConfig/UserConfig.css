@@ -8,6 +8,10 @@
     width: 100%;
 }
 
+.UserConfig-Inputs.FirstChild {
+    margin-right: 5.3em;
+}
+
 .UserConfig-ScrollableContent {
     max-height: 25vh;
     padding: 0;
@@ -16,6 +20,10 @@
 .UserConfig-Inputs-FlexBoxWrapper {
     border-bottom: 1px solid;
     margin-right: 1em;
+}
+
+.UserConfig-Inputs-FlexBoxWrapper:last-child {
+    border-bottom: 0px;
 }
 
 .UserConfig-InputRow {
@@ -31,13 +39,17 @@
     width: 30%;
 }
 
+.UserConfig-Input.long {
+    width: 80%;
+}
+
 .UserConfig-Unit {
     width: 20%;
     text-align: end;
     margin: auto;
 }
 
-button.UserConfig-RemoveButton {
+button.UserConfig-OperationButton {
     margin: 1em 0.5em;
 }
 
@@ -48,4 +60,23 @@ img.UserConfig-RemoveButton {
 .UserConfig-AddButton {
     width: 100%;
     border-radius: 0px 0px 10px 10px;
+}
+
+.UserConfig-Preview {
+    position: absolute;
+    height: 300px;
+    width: 400px;
+    top: calc(50% - 150px);
+    left: calc(50% - 200px);
+    border: 1em solid #b7d6a0;
+}
+
+.UserConfig-CrossButton {
+    width: 3em;
+    position: relative;
+    left: calc(400px - 3em);
+}
+
+.UserConfig-PreviewHeaderWrapper {
+
 }
